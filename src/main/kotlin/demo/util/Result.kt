@@ -8,14 +8,21 @@ sealed class Result<T> {
     fun getValue(): T {
         return when (this) {
             is Success -> value
-            is Failure -> throw Exception("Result is a failure", exception)
+            is Failure -> throw Exception("Result is a failure (indicates usage error)", exception)
+        }
+    }
+
+    fun getValueOrThrow(): T {
+        return when (this) {
+            is Success -> value
+            is Failure -> throw exception
         }
     }
 
     fun getException(): Throwable {
         return when (this) {
-            is Success -> throw Exception("Result is a success")
             is Failure -> exception
+            is Success -> throw Exception("Result is a success (indicates usage error)")
         }
     }
 
